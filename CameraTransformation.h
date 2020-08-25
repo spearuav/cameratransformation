@@ -1,0 +1,75 @@
+#ifndef __CAMERATRANSFORMATION_H
+#define __CAMERATRANSFORMATION_H
+
+#include <Eigen/Core>
+#include <Eigen/Geometry>
+
+using namespace std;
+using namespace Eigen;
+
+class CameraTransformation{
+
+  public:
+  
+  CameraTransformation();
+  
+  //Setters for model parameters
+  
+   void setBodyOrientation(double yaw, double pitch, double roll);
+   void setGimbalOrientation(double yaw, double pitch, double roll);
+   void setCameraParameters(double w_pixels, double h_pixels, double w_fov);
+   void setWindowSize(int wpixels, int hpixels);
+   void setCurrentAltitude(double alt);
+  
+  
+  //Getters for model results
+  
+   void getPixelDirection(double xraw, double yraw, double &v1, double &v2, double &v3);
+   void getPixelVector(double xraw, double yraw, double &x, double &y, double &z);
+   void getPixelVectorPolar(double x_raw, double y_raw, double &radius, double &angle);
+	
+ private:
+
+  const double Z_EPSILON = 0.001;
+
+  //Body angles. All radians.
+  
+  double bodyYaw = 0;
+  double bodyPitch = 0;
+  double bodyRoll = 0;
+  
+  
+  //Gimbal angles. All radians.
+  double gimbalYawRad   = 0;
+  double gimbalPitchRad = 0;
+  double gimbalRollRad  = 0;
+    
+  //Camera and sensor information
+
+  double sensorW = 1280;    //Pixels on sensor
+  double sensorH = 720;     //Pxels on sensor
+  double focalLength = 1;             //Focal length normalized in sensor pixels.
+    
+  //Video window information
+
+  double windowW = 640; //Pixels on window
+  double windowH = 480; //Pixels on window
+    
+  //World information
+  
+  double height=50;             //ASL height estimate. Meters, but can be anything really.
+  
+  //Internal geometric representations
+  
+  Matrix<double, 3, 3> Rc_p;    //Window pixels to camera axes transformation
+  Matrix3d Rg_c;                //Camera to gimbal axes transformation
+  Quaterniond Rb_g;             //Gimbal to body axes transformation
+  Quaterniond Rw_b;             //Body to world axes transformation
+  
+  
+  Quaterniond euler2Quaternion(double yaw, double pitch, double roll);
+  void updateCamera();
+  Vector3d pixel2Vector(double xraw, double yraw);
+  void polar(double x, double y, double& r, double& theta);
+};
+#endif
