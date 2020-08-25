@@ -1,2 +1,2 @@
-# cameratransformation
+# camera transformation
 Camera Transformation library
