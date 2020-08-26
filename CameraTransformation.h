@@ -1,11 +1,31 @@
 #ifndef __CAMERATRANSFORMATION_H
 #define __CAMERATRANSFORMATION_H
+/***********************************************************************
+ *
+ *   File Name      :  CameraTransformation.h
+ *
+ *   Project        :  NinoxC2
+ *
+ *   Date created   :  Aug 26, 2020
+ *
+ *   Author         :  Ram Sobol
+ *
+ *   Description    :  the file implements camera transformation class header file
+ *
+ *   Change History :  
+ *                                   
+ *   Copyright (c) 2020, SpearUAV Ltd. Confidential Proprietary
+ *
+ **********************************************************************************************/
 
+/*************************************  INCLUDE FILES*****************************************/
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 
 using namespace std;
 using namespace Eigen;
+
+/************************************* CLASS DEFINITION  ****************************************/
 
 class CameraTransformation{
 
