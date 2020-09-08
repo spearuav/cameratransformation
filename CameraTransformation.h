@@ -42,11 +42,15 @@ class CameraTransformation{
    void setCurrentAltitude(double alt);
   
   
-  //Getters for model results
+  //Getters for model results - world-axes position of an image pixel
   
    void getPixelDirection(double xraw, double yraw, double &v1, double &v2, double &v3);
    void getPixelVector(double xraw, double yraw, double &x, double &y, double &z);
    void getPixelVectorPolar(double x_raw, double y_raw, double &radius, double &angle);
+
+   //Getters for model results - pixel position of a real-world
+
+   bool getPointPixel(double v1, double v2, double v3, double &xpoint, double &ypoint);
 	
  private:
 

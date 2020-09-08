@@ -180,6 +180,53 @@ void CameraTransformation::getPixelVectorPolar(double x_raw, double y_raw, doubl
     return;
 }
 
+bool getPointPixel(double v1, double v2, double v3, double &xpoint, double &ypoint)
+{
+  //Takes a world-axes vector (north-east-down) as input and outputs a corresponding pixel coordinate in the image
+  //Output is via the xpoint and ypoint references
+  //When the return value is false, the outputs indicate the point's location in the image.
+  //When the return value is true, the outputs indicate a point along the image's edge closest to the point (which is outside the image)
+  //The closest-point output may be used to point an arrow towards the point in interest
+  Vector3d vec(v1,v2,v3);
+  bool flag = false; // Flag goes true if the coordinates were outside the frame and we had to do something funny.
+  vec = Rc_p.inverse() * Rg_c.inverse() * Rb_g.inverse() * Rw_b.inverse() * vec
+  if (vec(1) <= 0 ) // Pixel is off the left edge of the frame
+  {
+    flag = true;
+    vec(1) = 0; // Stick the pixel to the left edge.
+  }
+  else if (vec(1)>=sensorW) // Pixel is off the right edge of the frame.
+  {
+    flag = true;
+    vec(1) = sensorW; // Stick the pixel to the right edge.
+  }
+  if (vec(2) <= 0 ) // Pixel is off the top edge of the frame.
+  {
+    flag = true;
+    vec(2) = 0; // Stick the pixel to the top edge.
+  }
+  else if (vec(2)>=sensorH) // Pixel is off the right edge of the frame.
+  {
+    flag = true;
+    vec(2) = sensorH; // Stick the pixel to the bottom edge.
+  }
+  if (v1>=0) // Verify that the target is ahead of us. If not, it can't be on the screen.
+  {
+    flag = true;
+    if(vec(1)>=sensorW/2)
+    {
+      vec(1)=sensorW; // Stick the pixel to the right edge to cue the user to the right.
+    }
+    else 
+    {
+      vec(1)=0; // Stick the pixel to the left edge to cue the user to the left
+    }
+  }
+  xpoint = vec(1);
+  ypoint = vec(2);
+  return flag;
+}
+
 void CameraTransformation::polar(double x, double y, double &r , double &theta)
 {
     r = sqrt((pow(x,2))+(pow(y,2)));

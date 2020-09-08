@@ -76,15 +76,17 @@ void calculatePoi(CameraTransformation *myCam , double xraw, double yraw){
   double zvec;
   double radius;
   double theta;
+  double xpix;
+  double ypix;
 	
   myCam->getPixelVector(xraw, yraw, xvec, yvec, zvec);
-  myCam->getPixelVectorPolar( xraw, yraw, radius , theta);
-  
+  myCam->getPixelVectorPolar(xraw, yraw, radius , theta);
+  mycam->getPointPixel(xvec,yvec,zvec,xpix,ypix);
   cout << fixed << showpoint;
   cout << std::setprecision(2);
   cout << "TouchPoint :" << setw(10) << left << xraw << setw(10) << left << yraw ;
   cout << setw(5) << left << " X " << xvec << setw(10) << left << " Y " << yvec << setw(5) << left << " Z " << zvec << setw(5) << left << " Radius: " << radius << setw(5) << left <<  " Theta: " << theta << endl;
-  
+  cout << "NewPoint :" << setw(10) << left << xpix << setw(10) << left << ypix ;
   return;	
 }
 
@@ -113,6 +115,13 @@ int main(int argc, char** argv)
 									{0                ,  cameraHpixels 		}
 									};
 
+  const touchpoint touchPointsOutside[] = {
+                  {-cameraWpixels / 2           , cameraHpixels / 2},
+									{cameraWpixels * 1.5				  ,	cameraHpixels / 2},
+									{cameraWpixels / 2            ,	-cameraHpixels / 2},
+									{cameraWpixels / 2	          , cameraHpixels * 1.5},
+									{cameraWpixels * 2            ,  cameraHpixels * 2}
+									};
   ArgvParser cmd;     
   CameraTransformation myCam;
 
@@ -138,10 +147,17 @@ int main(int argc, char** argv)
   
   double xraw = cameraWpixels / 2 ;
   double yraw = cameraHpixels / 2 ;
+  double vecx = 0;
+  double vecy = 0;
+  double vecz = 0;
   
- 
+  cout << "POI calculation for normal points:" << endl;
   for (int i = 0 ; i < sizeof(touchPoints)/sizeof(touchpoint) ;i++ ){
-	  calculatePoi(&myCam , touchPoints[i].xraw , touchPoints[i].yraw); 
+	  calculatePoi(&myCam , touchPoints[i].xraw , touchPoints[i].yraw);
+  }
+  cout << "POI calculations for points outside the FOV"
+  for (int i = 0 ; i < sizeof(touchPointsOutside)/sizeof(touchpoint) ;i++ ){
+	  calculatePoi(&myCam , touchPointsOutside[i].xraw , touchPoints[i].yraw);
   }
   
   return 0;
