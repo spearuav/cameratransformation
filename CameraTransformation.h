@@ -37,7 +37,7 @@ class CameraTransformation{
   
    void setBodyOrientation(double yaw, double pitch, double roll);
    void setGimbalOrientation(double yaw, double pitch, double roll);
-   void setCameraParameters(double w_pixels, double h_pixels, double w_fov);
+   void setCameraParameters(double w_pixels, double h_pixels, double w_fov, double pixsize);
    void setWindowSize(int wpixels, int hpixels);
    void setCurrentAltitude(double alt);
   
@@ -72,7 +72,9 @@ class CameraTransformation{
 
   double sensorW = 1280;    //Pixels on sensor
   double sensorH = 720;     //Pxels on sensor
+  double wFovRad = 30;
   double focalLength = 1;             //Focal length normalized in sensor pixels.
+  double pixsize = 2.9e-6;
     
   //Video window information
 

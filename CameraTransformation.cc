@@ -28,7 +28,7 @@ CameraTransformation::CameraTransformation()
 {
   setBodyOrientation(0, 0, 0);
   setGimbalOrientation(0, 0, 0);
-  setCameraParameters(1280, 720, 30);
+  setCameraParameters(1280, 720, 30, 2.9E-6);
   setWindowSize(640, 480);
   Rg_c << 0, 0, 1,
           1, 0, 0,
@@ -56,24 +56,25 @@ Quaterniond CameraTransformation::euler2Quaternion(double yaw, double pitch, dou
 
 void CameraTransformation::updateCamera()
 {
-  //Transformation matrix scaling and translating the pixels
+  //Rc_p: Transformation matrix scaling and translating the pixels
   //Acts on a vector (x,y,1) containing the window coordinates and the number 1.
+  //Turns it into a vector (x,y,f) representing the true pixel coordinates.
+  focalLength = sensorW/2/tan(wFovRad/2);
   Rc_p <<
     sensorW / windowW, 0, -0.5 * sensorW,
     0, sensorH / windowH, -0.5 * sensorH,
     0, 0, focalLength;
-
   return;
 }
 
 Vector3d CameraTransformation::pixel2Vector(double x_raw, double y_raw)
 {
   //Returns a unit vector in vehicle system (world axes, vehicle origin),
-  //representing the chose pixel's line of sight
+  //representing the chosen pixel's line of sight
 
   Vector3d pixel(x_raw, y_raw, 1);
-
-  pixel = Rw_b * Rb_g * Rg_c * Rc_p * pixel;
+  pixel = Rc_p * pixel;
+  pixel = Rw_b * Rb_g * Rg_c * pixel;
 
   pixel.normalize();
 
@@ -103,12 +104,13 @@ void CameraTransformation::setGimbalOrientation(double yaw, double pitch, double
   return;
 }
 
-void CameraTransformation::setCameraParameters(double wpixels, double hpixels, double wFovRad)
+void CameraTransformation::setCameraParameters(double wpixels, double hpixels,
+					       double wfovrad, double pixsize)
 {
   sensorW = wpixels;
   sensorH = hpixels;
-
-  focalLength = wpixels/2/tan(wFovRad/2);
+  pixsize = pixsize;
+  wFovRad = wfovrad;
 
   updateCamera();
 
@@ -180,7 +182,7 @@ void CameraTransformation::getPixelVectorPolar(double x_raw, double y_raw, doubl
     return;
 }
 
-bool getPointPixel(double v1, double v2, double v3, double &xpoint, double &ypoint)
+bool CameraTransformation::getPointPixel(double v1, double v2, double v3, double &xpoint, double &ypoint)
 {
   //Takes a world-axes vector (north-east-down) as input and outputs a corresponding pixel coordinate in the image
   //Output is via the xpoint and ypoint references
@@ -188,42 +190,51 @@ bool getPointPixel(double v1, double v2, double v3, double &xpoint, double &ypoi
   //When the return value is true, the outputs indicate a point along the image's edge closest to the point (which is outside the image)
   //The closest-point output may be used to point an arrow towards the point in interest
   Vector3d vec(v1,v2,v3);
+  Vector3d pix(0,0,focalLength);
   bool flag = false; // Flag goes true if the coordinates were outside the frame and we had to do something funny.
-  vec = Rc_p.inverse() * Rg_c.inverse() * Rb_g.inverse() * Rw_b.inverse() * vec
-  if (vec(1) <= 0 ) // Pixel is off the left edge of the frame
+  double bigF = 0;
+  double bigL=0;
+  vec = Rg_c.inverse() * Rb_g.inverse() * Rw_b.inverse() * vec; //Transform to camera frame
+  bigL=vec.norm();
+  bigF=focalLength*bigL/vec(2);
+  pix(0)=vec(0)/bigL*bigF;
+  pix(1)=vec(1)/bigL*bigF;
+  pix(2)=focalLength;
+  pix= Rc_p.inverse() * pix;
+  if (pix(0) < 0 ) // Pixel is off the left edge of the frame
   {
     flag = true;
-    vec(1) = 0; // Stick the pixel to the left edge.
+    pix(0) = 0; // Stick the pixel to the left edge.
   }
-  else if (vec(1)>=sensorW) // Pixel is off the right edge of the frame.
+  else if (pix(0)>windowW) // Pixel is off the right edge of the frame.
   {
     flag = true;
-    vec(1) = sensorW; // Stick the pixel to the right edge.
+    pix(0) = windowW; // Stick the pixel to the right edge.
+  } 
+  if (pix(1) < 0 ) // Pixel is off the top edge of the frame.
+  {
+    flag = true;
+    pix(1) = 0; // Stick the pixel to the top edge.
   }
-  if (vec(2) <= 0 ) // Pixel is off the top edge of the frame.
+  else if (pix(1)>windowH) // Pixel is off the right edge of the frame.
   {
     flag = true;
-    vec(2) = 0; // Stick the pixel to the top edge.
+    pix(1) = windowH; // Stick the pixel to the bottom edge.
   }
-  else if (vec(2)>=sensorH) // Pixel is off the right edge of the frame.
+  if (v1<0) // Handle offscreen target edge case
   {
     flag = true;
-    vec(2) = sensorH; // Stick the pixel to the bottom edge.
-  }
-  if (v1>=0) // Verify that the target is ahead of us. If not, it can't be on the screen.
-  {
-    flag = true;
-    if(vec(1)>=sensorW/2)
+    if(pix(0)>=windowW/2)
     {
-      vec(1)=sensorW; // Stick the pixel to the right edge to cue the user to the right.
+      pix(0)=windowW; // Stick the pixel to the right edge to cue the user to the right.
     }
     else 
     {
-      vec(1)=0; // Stick the pixel to the left edge to cue the user to the left
+      pix(0)=0; // Stick the pixel to the left edge to cue the user to the left
     }
   }
-  xpoint = vec(1);
-  ypoint = vec(2);
+  xpoint = pix(0);
+  ypoint = pix(1);
   return flag;
 }
 

@@ -78,15 +78,16 @@ void calculatePoi(CameraTransformation *myCam , double xraw, double yraw){
   double theta;
   double xpix;
   double ypix;
+  bool flag;
 	
   myCam->getPixelVector(xraw, yraw, xvec, yvec, zvec);
   myCam->getPixelVectorPolar(xraw, yraw, radius , theta);
-  mycam->getPointPixel(xvec,yvec,zvec,xpix,ypix);
+  flag=myCam->getPointPixel(xvec,yvec,zvec,xpix,ypix);
   cout << fixed << showpoint;
   cout << std::setprecision(2);
-  cout << "TouchPoint :" << setw(10) << left << xraw << setw(10) << left << yraw ;
+  cout << "TouchPoint :" << setw(10) << left << xraw << setw(10) << left << yraw;
   cout << setw(5) << left << " X " << xvec << setw(10) << left << " Y " << yvec << setw(5) << left << " Z " << zvec << setw(5) << left << " Radius: " << radius << setw(5) << left <<  " Theta: " << theta << endl;
-  cout << "NewPoint :" << setw(10) << left << xpix << setw(10) << left << ypix ;
+  cout << "NewPoint :  " << setw(10) << left << xpix << setw(10) << left << ypix << setw(10) << left << flag << endl;
   return;	
 }
 
@@ -101,19 +102,19 @@ void calculatePoi(CameraTransformation *myCam , double xraw, double yraw){
 int main(int argc, char** argv)
 {
   const double camerawFovRads = (30.0 / 180 ) * M_PI;
+  const double cameraPixelSize = 2.9e-6;
   const double cameraWpixels = 1920;
   const double cameraHpixels = 1080;
-  const double gimbalPitchRad = rads(-45);
+  const double gimbalPitchRad = rads(-60);
   const double currentAltitude = 100 ;
   const double bodyYawRad = rads(0);
   const double bodyPitchRads = rads(0);
   const double bodyRollRads = rads (0);
-  const touchpoint touchPoints[] = {{cameraWpixels / 2, cameraHpixels / 2 	},
-									{0				  ,	0					},
-									{cameraWpixels	  ,	0					},
-									{cameraWpixels	  , cameraHpixels		},
-									{0                ,  cameraHpixels 		}
-									};
+  const touchpoint touchPoints[] = {{cameraWpixels / 2    , cameraHpixels / 2 	},
+				    {0			  , 0    	        },
+				    {cameraWpixels	  , 0	        	},
+				    {cameraWpixels	  , cameraHpixels     	},
+				    {0                    , cameraHpixels      	}};
 
   const touchpoint touchPointsOutside[] = {
                   {-cameraWpixels / 2           , cameraHpixels / 2},
@@ -141,7 +142,7 @@ int main(int argc, char** argv)
   
   myCam.setBodyOrientation(bodyYawRad , bodyPitchRads , bodyRollRads );
   myCam.setGimbalOrientation(rads(0), gimbalPitchRad , rads(0));
-  myCam.setCameraParameters(cameraWpixels, cameraHpixels, camerawFovRads);
+  myCam.setCameraParameters(cameraWpixels, cameraHpixels, camerawFovRads, cameraPixelSize);
   myCam.setWindowSize(cameraWpixels, cameraHpixels);
   myCam.setCurrentAltitude( currentAltitude );
   
@@ -155,7 +156,7 @@ int main(int argc, char** argv)
   for (int i = 0 ; i < sizeof(touchPoints)/sizeof(touchpoint) ;i++ ){
 	  calculatePoi(&myCam , touchPoints[i].xraw , touchPoints[i].yraw);
   }
-  cout << "POI calculations for points outside the FOV"
+  cout << "POI calculations for points outside the FOV" << endl;
   for (int i = 0 ; i < sizeof(touchPointsOutside)/sizeof(touchpoint) ;i++ ){
 	  calculatePoi(&myCam , touchPointsOutside[i].xraw , touchPoints[i].yraw);
   }
