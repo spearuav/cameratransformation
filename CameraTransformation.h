@@ -37,7 +37,7 @@ class CameraTransformation{
   
    void setBodyOrientation(double yaw, double pitch, double roll);
    void setGimbalOrientation(double yaw, double pitch, double roll);
-   void setCameraParameters(double w_pixels, double h_pixels, double w_fov, double pixsize);
+   void setCameraParameters(double w_pixels, double h_pixels, double w_fov, double pixsize = 2.9E-6);
    void setWindowSize(int wpixels, int hpixels);
    void setCurrentAltitude(double alt);
   
