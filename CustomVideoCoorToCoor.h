@@ -17,6 +17,12 @@ public:
                                        int wpixels, int hpixels ,
                                        double videoX , double videoY ,
                                        QGeoCoordinate referenceLocation);
+    Q_INVOKABLE QPoint coorToVideoCoor(double gimbalYaw , double gimbalPitch, double gimbalRoll,
+                                       double bodyYaw ,double bodyPitch , double bodyRoll ,
+                                       double alt ,
+                                       int wpixels, int hpixels,
+                                       QGeoCoordinate originLocation,
+                                       QGeoCoordinate referenceLocation);
 
 
 private:

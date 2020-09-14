@@ -9,6 +9,8 @@
 
 #include "CustomVideoCoorToCoor.h"
 #include "CameraTransformation.h"
+#include "QGCGeo.h"
+#include <QDebug>
 
 
 
@@ -52,3 +54,31 @@ QGeoCoordinate CustomVideoCoorToCoor:: videoCoorToCoor(double gimbalYaw , double
 }
 
 
+QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw , double gimbalPitch, double gimbalRoll,
+                                       double bodyYaw ,double bodyPitch , double bodyRoll ,
+                                       double alt ,
+                                       int wpixels, int hpixels ,
+                                       QGeoCoordinate originLocation,
+                                       QGeoCoordinate referenceLocation)
+{
+    if (originLocation.isValid() && referenceLocation.isValid() && originLocation.distanceTo(referenceLocation) > 1 /* 1 meter*/)
+    {
+        myCameraTransformation->setWindowSize(wpixels, hpixels);
+        myCameraTransformation->setBodyOrientation(bodyYaw, bodyPitch , bodyRoll);
+        myCameraTransformation->setCurrentAltitude(alt);
+        myCameraTransformation->setGimbalOrientation(gimbalYaw, gimbalPitch , gimbalRoll);
+
+        double xpoint, ypoint, x, y, down;
+        convertGeoToNed(referenceLocation, originLocation, &y, &x, &down);
+//        qDebug() << "Reference : " << referenceLocation.toString() <<
+//                  "Origin : " << originLocation.toString();
+        bool valid = myCameraTransformation->getPointPixel(x, y, down, xpoint, ypoint);
+        qDebug() << "valid : " << valid <<
+                    "x : " << xpoint <<
+                    "y : " << ypoint;
+
+        return QPoint(static_cast<int>(xpoint), static_cast<int>(ypoint));
+    }
+
+    return QPoint(0,0);
+}
