@@ -221,7 +221,7 @@ bool CameraTransformation::getPointPixel(double v1, double v2, double v3, double
     flag = true;
     pix(1) = windowH; // Stick the pixel to the bottom edge.
   }
-  if (v1<0) // Handle offscreen target edge case
+  if (vec(2)<0) // Handle offscreen target edge case
   {
     flag = true;
     if(pix(0)>=windowW/2)
