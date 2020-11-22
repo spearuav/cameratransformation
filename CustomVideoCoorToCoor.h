@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGeoCoordinate>
 #include "CameraTransformation.h"
+#include <QPoint>
 
 class CustomVideoCoorToCoor : public QObject
 {
