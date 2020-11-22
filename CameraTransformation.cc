@@ -109,7 +109,7 @@ void CameraTransformation::setCameraParameters(double wpixels, double hpixels,
 {
   sensorW = wpixels;
   sensorH = hpixels;
-  pixsize = pixsize;
+  this->pixsize = pixsize;
   wFovRad = wfovrad;
 
   updateCamera();
