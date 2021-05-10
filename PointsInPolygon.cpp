@@ -12,7 +12,7 @@
  *
  *   Change History :
  *
- *   Copyright (c) 2020, SpearUAV Ltd. Confidential Proprietary
+ *   Copyright (c) 2021, SpearUAV Ltd. Confidential Proprietary
  *
  **********************************************************************************************/
 
@@ -20,7 +20,6 @@
 
 #include "PointsInPolygon.h"
 #include <iostream>
-//#include <algorithm>  
 
 using namespace std;
 
@@ -28,16 +27,16 @@ struct GeoPoint;
 
 // Returns true if the point p lies inside the polygon[] with n vertices
 // Time Complexity : O(n) where n is the number of vertices in the given polygon.
-bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int n) {
-	int count = 0, i = 1;
+bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int numberOfVertics) {
+	int count = 0, index = 1;
 	GeoPoint p1 = polygon[0];
 
 	// There must be at least 3 vertices in polygon[]
 	if (n < 3) return false;
 
 	do {
-		int next = (i + 1) % n;
-		GeoPoint p2 = polygon[i%n];
+		int next = (index + 1) % numberOfVertics;
+		GeoPoint p2 = polygon[i%numberOfVertics];
 
 		if ((p.longitude > std::min(p1.longitude, p2.longitude))
 			&& (p.longitude <= std::max(p1.longitude, p2.longitude))
@@ -49,8 +48,8 @@ bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int n) {
 			}
 		}
 		p1 = p2;
-		i = next;
-	} while (i != 0);
+		index = next;
+	} while (index != 0);
 
 	// Return true if count is odd, false otherwise
 	return count & 1; // Same as (count%2 == 1)

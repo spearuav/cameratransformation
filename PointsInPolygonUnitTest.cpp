@@ -12,7 +12,7 @@
  *
  *   Change History :
  *
- *   Copyright (c) 2020, SpearUAV Ltd. Confidential Proprietary
+ *   Copyright (c) 2021, SpearUAV Ltd. Confidential Proprietary
  *
  **********************************************************************************************/
 
@@ -49,11 +49,11 @@ using namespace CommandLineProcessing;
  *  Parameters :
  *  Returns    : void
  **********************************************************************************************/
-void isPOIInsidePolygon(GeoPoint p, GeoPoint polygon[], int n) { 
+void isPOIInsidePolygon(GeoPoint p, GeoPoint polygon[], int numberOfVertics) {
 
 	bool flag;
 
-	flag = pointInPolygon(p, polygon, n);
+	flag = pointInPolygon(p, polygon, numberOfVertics);
 
 	cout << fixed << showpoint;
 	//cout << std::setprecision(6);

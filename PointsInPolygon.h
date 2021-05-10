@@ -14,7 +14,7 @@
  *
  *   Change History :
  *
- *   Copyright (c) 2020, SpearUAV Ltd. Confidential Proprietary
+ *   Copyright (c) 2021, SpearUAV Ltd. Confidential Proprietary
  *
  **********************************************************************************************/
 
@@ -25,6 +25,6 @@ struct GeoPoint {
 };
 
 // Returns true if the point p lies inside the polygon[] with n vertices
-bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int n);
+bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int numberOfVertics);
 
 #endif
