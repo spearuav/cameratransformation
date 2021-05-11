@@ -10,8 +10,10 @@ using namespace cv;
 using namespace std;
 
 #define window "LiveFeed"
+#define M_PI 3.14159265358979323846
+
 Mat frame;
-const double camerawFovRads = (55.0 / 180) * 3.1415925358979;
+const double camerawFovRads = (55.0 / 180) * M_PI;
 const double cameraPixelSize = 2.9e-6;
 const double cameraWpixels = 640;
 const double cameraHpixels = 480;
@@ -48,7 +50,7 @@ void cbmouse(int event, int x, int y, int flags, void*userdata)
 	}
 }
 
-int main(int argc, char*argv[])
+int GeoLocationCameraTest(int argc, char*argv[])
 {
 	referenceLocation.setLatitude(currentLatitude); // in decimal degrees
 	referenceLocation.setLongitude(currentongitude); // in decimal degrees

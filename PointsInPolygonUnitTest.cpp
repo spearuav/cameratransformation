@@ -59,7 +59,6 @@ void isPOIInsidePolygon(GeoPoint p, GeoPoint polygon[], int numberOfVertics) {
 	//cout << std::setprecision(6);
 	cout << "Point to test :" << setw(10) << left << p.latitude << setw(10) << left << p.longitude;
 	cout << "Is inside :  " << setw(10) << left << flag << endl;
-	return;
 }
 
 /*********************************************************************************************
@@ -74,7 +73,7 @@ void printPolygon( GeoPoint polygon[]) {
 	cout << "Polygon[1]:" << setw(10) << left << polygon[1].latitude << setw(10) << left << polygon[1].longitude;
 	cout << "Polygon[2]:" << setw(10) << left << polygon[2].latitude << setw(10) << left << polygon[2].longitude;
 	cout << "Polygon[3]:" << setw(10) << left << polygon[3].latitude << setw(10) << left << polygon[3].longitude << endl;
-	return;
+
 }
 
 /*********************************************************************************************
@@ -95,6 +94,13 @@ int main(int argc, char** argv)
 
 	GeoPoint polygon3[] = { {32.09259, 34.77347}, {32.09156, 34.78280}, {32.08562, 34.78157}, {32.08782, 34.77147} };
 	const GeoPoint PointsToTest3[] = { { 32.08816,34.77625 }, { 32.08747,34.79002 }, { 32.08238,34.76918 }, { 32.08701,34.78042 } };
+
+	GeoPoint polygon4[] = { { 60.87114,-2.92401} , {60.89949,0.57570},{59.86490,0.19504}, {59.67717,-2.76476} };
+	const GeoPoint PointsToTest4[] = { {60.35078,-1.47519},{60.58245,-1.11784},{60.13099,-2.07725}, {59.79267,-3.44839}, {60.38535, 1.63610 }, {61.08972,0.9024} };
+
+	// Check polygon on the 180th meridian
+	GeoPoint polygon5[] = { {26.800399629288354, -176.22466496854983},{27.717896219550493, -168.42484891637156},{ 22.636058731914588, -169.326335193759},{22.080250792745936, -178.78540859707067} };
+	const GeoPoint PointsToTest5[] = { {25.333450917600157, -173.91215669177336},{23.860453385784098, -171.67803852607406},{20.595635969377824, 179.98647966272037} };
 
 	// Print first polygon
 	cout << "First polygon:" << endl;
@@ -122,5 +128,25 @@ int main(int argc, char** argv)
 	for (int i = 0; i < sizeof(PointsToTest3) / sizeof(GeoPoint); i++) {
 		isPOIInsidePolygon(PointsToTest3[i], polygon3, n3);
 	}
+
+	// Print fourth polygon
+	cout << "\n Fourth polygon:" << endl;
+	printPolygon(polygon4);
+	cout << "Check points inside third polygon" << endl;
+	int n4 = sizeof(polygon4) / sizeof(polygon4[0]);
+	for (int i = 0; i < sizeof(PointsToTest4) / sizeof(GeoPoint); i++) {
+		isPOIInsidePolygon(PointsToTest4[i], polygon4, n4);
+	}
+
+	// Print fifth polygon
+	cout << "\n Fourth polygon:" << endl;
+	printPolygon(polygon5);
+	cout << "Check points inside third polygon" << endl;
+	int n5 = sizeof(polygon5) / sizeof(polygon5[0]);
+	for (int i = 0; i < sizeof(PointsToTest5) / sizeof(GeoPoint); i++) {
+		isPOIInsidePolygon(PointsToTest5[i], polygon5, n5);
+	}
+
+
 	return 0;
 }
