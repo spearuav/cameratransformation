@@ -5,12 +5,13 @@
 #include <iomanip>
 #include "CameraTransformation.h"
 #include "CustomVideoCoorToCoor.h"
+#define _USE_MATH_DEFINES
+#include <math.h>
 
 using namespace cv;
 using namespace std;
 
 #define window "LiveFeed"
-#define M_PI 3.14159265358979323846
 
 Mat frame;
 const double camerawFovRads = (55.0 / 180) * M_PI;
