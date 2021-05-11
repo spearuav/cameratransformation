@@ -133,7 +133,7 @@ void CameraTransformation::setCurrentAltitude(double alt)
   return;
 }
 
-//Outputs a unit vector independent on heigh estimate
+//Outputs a unit vector independent on height estimation
 //Axes are north, east and down relative to camera location
 
 void CameraTransformation::getPixelDirection(double x_raw, double y_raw, double &v1, double &v2, double &v3)
@@ -188,12 +188,12 @@ bool CameraTransformation::getPointPixel(double v1, double v2, double v3, double
   //Output is via the xpoint and ypoint references
   //When the return value is false, the outputs indicate the point's location in the image.
   //When the return value is true, the outputs indicate a point along the image's edge closest to the point (which is outside the image)
-  //The closest-point output may be used to point an arrow towards the point in interest
-  Vector3d vec(v1,v2,v3);
-  Vector3d pix(0,0,focalLength);
+  //The closest-point output may be used to point an arrow towards the point of interest
+  Vector3d vec(v1, v2, v3);
+  Vector3d pix(0, 0, focalLength);
   bool flag = false; // Flag goes true if the coordinates were outside the frame and we had to do something funny.
   double bigF = 0;
-  double bigL=0;
+  double bigL = 0;
   vec = Rg_c.inverse() * Rb_g.inverse() * Rw_b.inverse() * vec; //Transform to camera frame
   bigL=vec.norm();
   bigF=focalLength*bigL/vec(2);
