@@ -22,6 +22,7 @@
 #include <iomanip>
 #include "argvparser.h"
 #include "CameraTransformation.h"
+//#include "CustomVideoCoorToCoor.h"
 
 
 using namespace std;
@@ -71,7 +72,8 @@ double rads(double degs)
  *  Parameters : 
  *  Returns    : void
  **********************************************************************************************/
-void calculatePoi(CameraTransformation *myCam , double xraw, double yraw) { 
+void calculatePoi(CameraTransformation *myCam , double xraw, double yraw) { //, QGeoCoordinate refLocation){
+	
   double xvec;
   double yvec;
   double zvec;
@@ -89,11 +91,14 @@ void calculatePoi(CameraTransformation *myCam , double xraw, double yraw) {
 	  radius = RADIUS_MAX_METER;
   }
 
+  //QGeoCoordinate coordinate = refLocation.atDistanceAndAzimuth(radius, theta);
+
   cout << fixed << showpoint;
   cout << std::setprecision(2);
   cout << "TouchPoint :" << setw(10) << left << xraw << setw(10) << left << yraw;
   cout << setw(5) << left << " X " << xvec << setw(10) << left << " Y " << yvec << setw(5) << left << " Z " << zvec << setw(5) << left << " Radius: " << radius << setw(5) << left <<  " Theta: " << theta << endl;
   cout << "NewPoint :  " << setw(10) << left << xpix << setw(10) << left << ypix << setw(10) << left << flag << endl;
+  //cout << "Estimated new geolocation  :" << setw(10) << left << coordinate << end1;
   return;	
 }
 
@@ -131,6 +136,7 @@ int main(int argc, char** argv)
 									{cameraWpixels / 2	          , cameraHpixels * 1.5},
 									{cameraWpixels * 2            ,  cameraHpixels * 2}
 									};
+  //QGeoCoordinate referenceLocation;
 
   ArgvParser cmd;     
   CameraTransformation myCam;
@@ -149,6 +155,9 @@ int main(int argc, char** argv)
      exit(1);
   }
   
+ // referenceLocation.setLatitude(32.0728230); // in decimal degrees
+ // referenceLocation.setLongitude(34.7819530); // in decimal degrees
+ // referenceLocation.setAltitude(currentAltitude); //in meters
 
   myCam.setBodyOrientation(bodyYawRad , bodyPitchRads , bodyRollRads );
   myCam.setGimbalOrientation(rads(0), gimbalPitchRad , rads(0));
