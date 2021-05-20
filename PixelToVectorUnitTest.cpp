@@ -1,9 +1,12 @@
 #include <iostream>
 #include <iomanip>
 #include "CameraTransformation.h"
-#include <assert.h>
+//#include <assert.h>
+#include "gtest/gtest.h"
+
 
 using namespace std;
+
 
 /**************************************  CONSTANTS ******************************************/
 double const RADIUS_MAX_METER = 5000;
@@ -51,19 +54,20 @@ void calculatePoiPolar(CameraTransformation *myCam, double xraw, double yraw, do
 	myCam->getPixelVectorPolar(xraw, yraw, radius, theta);
 	flag = myCam->getPointPixel(xvec, yvec, zvec, xpix, ypix);
 
+	
 	if (radius > RADIUS_MAX_METER) {
 		radius = RADIUS_MAX_METER;
 	}
 	outRadius = radius;
 	outTheta = theta;
 
-	
+	/* // Uncomment if you want to print the data
 	cout << fixed << showpoint;
 	cout << std::setprecision(2);
 	cout << "TouchPoint :" << setw(10) << left << xraw << setw(10) << left << yraw;
 	cout << setw(5) << left << " X " << xvec << setw(10) << left << " Y " << yvec << setw(5) << left << " Z " << zvec << setw(5) << left << " Radius: " << radius << setw(5) << left << " Theta: " << theta << endl;
 	cout << "Estimated pixel from vector:  " << setw(10) << left << xpix << setw(10) << left << ypix << setw(10) << left <<"Not on screen:"<< flag << endl;
-
+	*/
 }
 
 /*********************************************************************************************
@@ -117,6 +121,7 @@ void calculateExpectedVectorPolar(double xraw, double yraw, double &expactedRadi
 	theta = atan2(y, x);
 	theta = (theta * 180) / M_PI;
 
+	
 	if (radius > RADIUS_MAX_METER) {
 		radius = RADIUS_MAX_METER;
 	}
@@ -124,9 +129,10 @@ void calculateExpectedVectorPolar(double xraw, double yraw, double &expactedRadi
 	expactedRadius = radius;
 	expactedTheta = theta;
 
+	/* // Uncomment if you want to print the data
 	cout << "Expected output for touchpoint:" << setw(10) << left << xraw << setw(10) << left << yraw;
 	cout << setw(5) << left << " Radius: " << radius << setw(5) << left << " Theta: " << theta <<"\n"<< endl;
-
+	*/
 }
 
 /*********************************************************************************************
@@ -137,7 +143,7 @@ void calculateExpectedVectorPolar(double xraw, double yraw, double &expactedRadi
  *  Returns    : void
  *
  **********************************************************************************************/
-int main(int argc, char** argv)
+TEST(CameraTransformationTest, CheckRadiusAdnAngleMatch)
 {
 	const double camerawFovRads = (55.0 / 180) * M_PI;
 	const double cameraPixelSize = 2.9e-6;
@@ -181,14 +187,17 @@ int main(int argc, char** argv)
 	myCam.setWindowSize(cameraWpixels, cameraHpixels);
 	myCam.setCurrentAltitude(currentAltitude);
 
-	cout << "POI calculation for normal points:" << endl;
 	for (int i = 0; i < sizeof(touchPoints) / sizeof(touchpoint); i++) {
 		calculatePoiPolar(&myCam, touchPoints[i].xraw, touchPoints[i].yraw, CTRadius, CTTheta);
 		calculateExpectedVectorPolar(touchPoints[i].xraw, touchPoints[i].yraw, expactedRadius, expactedTheta);
 		// Assert outputs are equal with precision of 0.001
-		assert(abs(CTRadius - expactedRadius) < PRECISION);
-		assert(abs(CTTheta - expactedTheta) < PRECISION);
-	}
+		ASSERT_TRUE(abs(CTRadius - expactedRadius) < PRECISION);
+		ASSERT_TRUE(abs(CTTheta - expactedTheta) < PRECISION);
 
-	return 0;
+	}
+}
+
+int main(int argc, char **argv) {
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
