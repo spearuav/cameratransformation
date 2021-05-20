@@ -193,6 +193,7 @@ TEST(CameraTransformationTest, CheckRadiusAdnAngleMatch)
 		// Assert outputs are equal with precision of 0.001
 		ASSERT_TRUE(abs(CTRadius - expactedRadius) < PRECISION);
 		ASSERT_TRUE(abs(CTTheta - expactedTheta) < PRECISION);
+		ASSERT_TRUE(0);
 
 	}
 }
