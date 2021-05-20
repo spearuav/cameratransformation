@@ -42,8 +42,8 @@ jobs:
       run: cmake --build . --config $BUILD_TYPE
     
     - name: make
-      run: cd test && make
+      run: cd build/test && make
    
     - name: Test
       # working-directory: ${{runner.workspace}}/build
-      run: test/PixelToVectorTest
+      run: build/test/PixelToVectorTest
