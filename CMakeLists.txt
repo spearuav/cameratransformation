@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.0)
 project(CameraTransformation)
 
 # set(CMAKE_CXX_STANDARD 17) 
-# set(include_dest "include/${PROJECT_NAME}")
+set(include_dest "include/${PROJECT_NAME}")
 # set(tool_dest "bin")
 # set(lib_dest "lib")
 
