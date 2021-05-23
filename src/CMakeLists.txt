@@ -1,3 +1,4 @@
+set(header_path "${${PROJECT_NAME}_SOURCE_DIR}/include/${PROJECT_NAME}")
 set(header CameraTransformation.h PointsInPolygon.h)
 set(src CameraTransformation.cc PointsInPolygon.cpp)
 
