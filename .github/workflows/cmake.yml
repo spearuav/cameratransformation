@@ -39,12 +39,12 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       shell: bash
       # Execute the build.  You can specify a specific target with "--target <NAME>"
-      run: cmake --build . --config $BUILD_TYPE
+      run: cmake . # cmake --build . --config $BUILD_TYPE
     
     - name: build
-      run: make
+      run: cd /home/runner/work/cameratransformation/build && make
    
     - name: Test
       # working-directory: ${{runner.workspace}}/build
-      run: cd test && ./CameraTransformation.test
+      run: cd /home/runner/work/cameratransformation/build/test && ./CameraTransformation.test
 
