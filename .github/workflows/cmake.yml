@@ -41,9 +41,10 @@ jobs:
       # Execute the build.  You can specify a specific target with "--target <NAME>"
       run: cmake --build . --config $BUILD_TYPE
     
-    - name: make
-      run: cmake . && make
+    #- name: make
+     # run: cmake . && make
    
     - name: Test
       # working-directory: ${{runner.workspace}}/build
-      run: ./PixelToVectorTest
+      run: cd test && ./CameraTransformation.test
+
