@@ -1,10 +1,19 @@
 cmake_minimum_required (VERSION 3.0)
-project(PixelToVectorTest)
+project(CameraTransformation)
+
+# set(CMAKE_CXX_STANDARD 17) 
+# set(include_dest "include/${PROJECT_NAME}")
+# set(tool_dest "bin")
+# set(lib_dest "lib")
+
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+
+add_subdirectory(src)
+add_subdirectory(test)
+
 include_directories(argvparser)
-add_executable (PixelToVectorTest CameraTransformation.cc PixelToVectorUnitTest.cpp)
 add_subdirectory(argvparser)
-target_link_libraries (PixelToVectorTest PUBLIC Eigen3::Eigen argvparser gtest_main)
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
