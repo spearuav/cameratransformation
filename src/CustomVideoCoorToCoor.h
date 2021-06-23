@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGeoCoordinate>
 #include "CameraTransformation.h"
+#include "PointsInPolygon.h"
 #include <QPoint>
 
 class CustomVideoCoorToCoor : public QObject
@@ -24,11 +25,14 @@ public:
                                        int wpixels, int hpixels,
                                        QGeoCoordinate originLocation,
                                        QGeoCoordinate referenceLocation);
+    Q_INVOKABLE bool pointInPolygon(QGeoCoordinate p, QList<QGeoCoordinate>& polygon);
 
 
 private:
     double const RADIUS_MAX_METER = 5000;
     CameraTransformation *myCameraTransformation;
+    static const int MAX_TEMP_GEO_POINTS = 50;
+    GeoPoint tempGeoPoint[MAX_TEMP_GEO_POINTS];
 };
 
 #endif // CUSTOMVIDEOCOORTOCOOR_H

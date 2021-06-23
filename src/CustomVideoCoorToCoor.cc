@@ -77,3 +77,25 @@ QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw , double gimbalPi
 
     return QPoint(-1,-1);
 }
+
+bool CustomVideoCoorToCoor::pointInPolygon(QGeoCoordinate p, QList<QGeoCoordinate>& polygon)
+{
+    if (polygon.count() < 3)
+        return false;
+
+    if (polygon.count() >= MAX_TEMP_GEO_POINTS) {
+        qWarning() << "pointInPolygon - will not treat polygons with more than 50 points. aborting";
+        return false;
+    }
+
+    // Convert QList<QGeoCoordinate> to GeoPoint[]
+    for (int i=0; i < polygon.count(); i++) {
+        tempGeoPoint[i].latitude = polygon[i].latitude();
+        tempGeoPoint[i].longitude = polygon[i].longitude();
+    }
+
+    GeoPoint testPt;
+    testPt.latitude = p.latitude();
+    testPt.longitude = p.longitude();
+    return ::pointInPolygon(testPt, tempGeoPoint, polygon.count());
+}
