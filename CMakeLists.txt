@@ -6,7 +6,7 @@ set(include_dest "include/${PROJECT_NAME}")
 # set(tool_dest "bin")
 # set(lib_dest "lib")
 
-find_package (Eigen3 3.3 REQUIRED NO_MODULE)
+find_package (Eigen REQUIRED NO_MODULE)
 
 include_directories(src)
 add_subdirectory(src)
