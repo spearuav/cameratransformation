@@ -19,8 +19,8 @@
  **********************************************************************************************/
 
 /*************************************  INCLUDE FILES*****************************************/
-#include <eigen3/Eigen/Core>
-#include <eigen3/Eigen/Geometry>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 using namespace std;
 using namespace Eigen;
