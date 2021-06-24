@@ -8,7 +8,7 @@ set(include_dest "include/${PROJECT_NAME}")
 
 find_package (Eigen3 3.3 REQUIRED NO_MODULE)
 
-include_directories(src Eigen3::Eigen/eigen3)
+include_directories(src /usr/include/eigen3)
 add_subdirectory(src)
 add_subdirectory(test)
 
