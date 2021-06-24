@@ -5,6 +5,9 @@ set(src CameraTransformation.cc PointsInPolygon.cpp)
 add_library(${PROJECT_NAME} SHARED
   ${header}
   ${src})
+
+include_directories( Eigen3::Eigen )
+
 target_include_directories(${PROJECT_NAME}
   PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 
