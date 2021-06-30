@@ -20,6 +20,7 @@
 
 #include "PointsInPolygon.h"
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -71,7 +72,7 @@ bool pointInPolygon(GeoPoint p, GeoPoint polygon[], int numberOfVertics) {
 		}
 		p1 = p2;
 		index = next;
-	} while (index != 0);
+	} while (index != 1);
 
 	// Return true if count is odd, false otherwise
 	return count & 1; // Same as (count%2 == 1)
