@@ -12,6 +12,7 @@
 #include "QGCGeo.h"
 #include <QDebug>
 
+GeoPoint CustomVideoCoorToCoor::tempGeoPoint[4];
 
 
 CustomVideoCoorToCoor::CustomVideoCoorToCoor()
@@ -78,24 +79,20 @@ QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw , double gimbalPi
     return QPoint(-1,-1);
 }
 
-bool CustomVideoCoorToCoor::pointInPolygon(QGeoCoordinate p, QList<QGeoCoordinate>& polygon)
+bool CustomVideoCoorToCoor::pointInView(const QGeoCoordinate& p, const QGeoCoordinate& p1, const QGeoCoordinate& p2, const QGeoCoordinate& p3, const QGeoCoordinate& p4)
 {
-    if (polygon.count() < 3)
-        return false;
-
-    if (polygon.count() >= MAX_TEMP_GEO_POINTS) {
-        qWarning() << "pointInPolygon - will not treat polygons with more than 50 points. aborting";
-        return false;
-    }
-
-    // Convert QList<QGeoCoordinate> to GeoPoint[]
-    for (int i=0; i < polygon.count(); i++) {
-        tempGeoPoint[i].latitude = polygon[i].latitude();
-        tempGeoPoint[i].longitude = polygon[i].longitude();
-    }
+    // Convert view points to a GeoPoint[] vector
+    tempGeoPoint[0].latitude = p1.latitude();
+    tempGeoPoint[0].longitude = p1.longitude();
+    tempGeoPoint[1].latitude = p2.latitude();
+    tempGeoPoint[1].longitude = p2.longitude();
+    tempGeoPoint[2].latitude = p3.latitude();
+    tempGeoPoint[2].longitude = p3.longitude();
+    tempGeoPoint[3].latitude = p4.latitude();
+    tempGeoPoint[3].longitude = p4.longitude();
 
     GeoPoint testPt;
     testPt.latitude = p.latitude();
     testPt.longitude = p.longitude();
-    return ::pointInPolygon(testPt, tempGeoPoint, polygon.count());
+    return ::pointInPolygon(testPt, tempGeoPoint, 4);
 }

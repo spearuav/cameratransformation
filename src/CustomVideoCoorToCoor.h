@@ -25,14 +25,13 @@ public:
                                        int wpixels, int hpixels,
                                        QGeoCoordinate originLocation,
                                        QGeoCoordinate referenceLocation);
-    Q_INVOKABLE bool pointInPolygon(QGeoCoordinate p, QList<QGeoCoordinate>& polygon);
+    Q_INVOKABLE bool pointInView(const QGeoCoordinate& p, const QGeoCoordinate& p1, const QGeoCoordinate& p2, const QGeoCoordinate& p3, const QGeoCoordinate& p4);
 
 
 private:
     double const RADIUS_MAX_METER = 5000;
     CameraTransformation *myCameraTransformation;
-    static const int MAX_TEMP_GEO_POINTS = 50;
-    GeoPoint tempGeoPoint[MAX_TEMP_GEO_POINTS];
+    static GeoPoint tempGeoPoint[4];
 };
 
 #endif // CUSTOMVIDEOCOORTOCOOR_H
