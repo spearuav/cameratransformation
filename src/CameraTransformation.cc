@@ -154,7 +154,7 @@ void CameraTransformation::getPixelVector(double x_raw, double y_raw, double &x,
 {
   Vector3d pixel = pixel2Vector(x_raw, y_raw);
 
-  if (pixel.z() < 0){
+  if (pixel.z() < 0) {
       pixel.z() = Z_EPSILON;
   }
 
@@ -175,9 +175,9 @@ void CameraTransformation::getPixelVectorPolar(double x_raw, double y_raw, doubl
     double yVec;
     double zVec;
 
-    getPixelVector(x_raw, y_raw, xVec, yVec , zVec);
+    getPixelVector(x_raw, y_raw, xVec, yVec, zVec);
 
-    polar(xVec, yVec , radius , angle);
+    polar(xVec, yVec, radius, angle);
 
     return;
 }

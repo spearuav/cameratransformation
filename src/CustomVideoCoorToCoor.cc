@@ -21,22 +21,21 @@ CustomVideoCoorToCoor::CustomVideoCoorToCoor()
 }
 
 
-void CustomVideoCoorToCoor::setCameraParameters(double w_pixels, double h_pixels, double w_fov){
-
+void CustomVideoCoorToCoor::setCameraParameters(double w_pixels, double h_pixels, double w_fov)
+{
     myCameraTransformation->setCameraParameters(w_pixels, h_pixels , w_fov);
-
 }
 
 
-QGeoCoordinate CustomVideoCoorToCoor:: videoCoorToCoor(double gimbalYaw , double gimbalPitch, double gimbalRoll,
-                                   double bodyYaw ,double bodyPitch , double bodyRoll ,
-                                   double alt ,
+QGeoCoordinate CustomVideoCoorToCoor::videoCoorToCoor(double gimbalYaw, double gimbalPitch, double gimbalRoll,
+                                   double bodyYaw, double bodyPitch, double bodyRoll,
+                                   double alt,
                                    int wpixels, int hpixels ,
-                                   double videoX , double videoY ,
-                                   QGeoCoordinate referenceLocation){
-
+                                   double videoX , double videoY,
+                                   QGeoCoordinate referenceLocation)
+{
     myCameraTransformation->setWindowSize(wpixels, hpixels);
-    myCameraTransformation->setBodyOrientation(bodyYaw, bodyPitch , bodyRoll);
+    myCameraTransformation->setBodyOrientation(bodyYaw, bodyPitch, bodyRoll);
     myCameraTransformation->setCurrentAltitude(alt);
     myCameraTransformation->setGimbalOrientation(gimbalYaw, gimbalPitch , gimbalRoll);
 
@@ -55,10 +54,10 @@ QGeoCoordinate CustomVideoCoorToCoor:: videoCoorToCoor(double gimbalYaw , double
 }
 
 
-QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw , double gimbalPitch, double gimbalRoll,
-                                       double bodyYaw ,double bodyPitch , double bodyRoll ,
-                                       double alt ,
-                                       int wpixels, int hpixels ,
+QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw, double gimbalPitch, double gimbalRoll,
+                                       double bodyYaw, double bodyPitch, double bodyRoll,
+                                       double alt,
+                                       int wpixels, int hpixels,
                                        QGeoCoordinate originLocation,
                                        QGeoCoordinate referenceLocation)
 {
@@ -71,9 +70,8 @@ QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw , double gimbalPi
 
         double xpoint, ypoint, x, y, down;
         convertGeoToNed(referenceLocation, originLocation, &x, &y, &down);
-        myCameraTransformation->getPointPixel(x, y, alt, xpoint, ypoint);
-
-        return QPoint(static_cast<int>(xpoint), static_cast<int>(ypoint));
+        if (myCameraTransformation->getPointPixel(x, y, alt, xpoint, ypoint) == false)
+            return QPoint(static_cast<int>(xpoint), static_cast<int>(ypoint));
     }
 
     return QPoint(-1,-1);
