@@ -18,6 +18,7 @@
 
 /*************************************  INCLUDE FILES*****************************************/
 
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <iostream>
 #include "CameraTransformation.h"
@@ -243,5 +244,5 @@ void CameraTransformation::polar(double x, double y, double &r , double &theta)
     r = sqrt((pow(x,2))+(pow(y,2)));
 
     theta = atan2(y , x);
-    theta = (theta * 180)/3.141592654;    
+    theta = (theta * 180)/M_PI;    
 }
