@@ -134,6 +134,18 @@ void CameraTransformation::setCurrentAltitude(double alt)
   return;
 }
 
+void CameraTransformation::setPixelToCameraTransformation(
+  double m11, double m12, double m13,
+  double m21, double m22, double m23,
+  double m31, double m32, double m33)
+{
+  focalLength = m33;
+  Rc_p <<
+    m11, m12, m13,
+    m21, m22, m23,
+    m31, m32, m33;
+}
+
 //Outputs a unit vector independent on height estimation
 //Axes are north, east and down relative to camera location
 

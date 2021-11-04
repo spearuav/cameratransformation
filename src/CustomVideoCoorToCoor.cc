@@ -77,6 +77,14 @@ QPoint CustomVideoCoorToCoor::coorToVideoCoor(double gimbalYaw, double gimbalPit
     return QPoint(-1,-1);
 }
 
+void CustomVideoCoorToCoor::setPixelToCameraTransformation(const QTransform& transform)
+{
+    myCameraTransformation->setPixelToCameraTransformation(
+        transform.m11(), transform.m12(), transform.m13(),
+        transform.m21(), transform.m22(), transform.m23(),
+        transform.m31(), transform.m32(), transform.m33());
+}
+
 bool CustomVideoCoorToCoor::pointInView(const QGeoCoordinate& p, const QGeoCoordinate& p1, const QGeoCoordinate& p2, const QGeoCoordinate& p3, const QGeoCoordinate& p4)
 {
     // Convert view points to a GeoPoint[] vector

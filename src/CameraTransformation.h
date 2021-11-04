@@ -40,7 +40,9 @@ class CameraTransformation{
    void setCameraParameters(double w_pixels, double h_pixels, double w_fov, double pixsize = 2.9E-6);
    void setWindowSize(int wpixels, int hpixels);
    void setCurrentAltitude(double alt);
-  
+   void setPixelToCameraTransformation(double m11, double m12, double m13,
+                                       double m21, double m22, double m23,
+                                       double m31, double m32, double m33);
   
   // Getters for model results - world-axes position of an image pixel
   

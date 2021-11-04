@@ -25,6 +25,7 @@ public:
                                        int wpixels, int hpixels,
                                        QGeoCoordinate originLocation,
                                        QGeoCoordinate referenceLocation);
+    Q_INVOKABLE void setPixelToCameraTransformation(const QTransform& transform);
     Q_INVOKABLE bool pointInView(const QGeoCoordinate& p, const QGeoCoordinate& p1, const QGeoCoordinate& p2, const QGeoCoordinate& p3, const QGeoCoordinate& p4);
 
 
