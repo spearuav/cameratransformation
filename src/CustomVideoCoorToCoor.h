@@ -6,6 +6,7 @@
 #include "CameraTransformation.h"
 #include "PointsInPolygon.h"
 #include <QPoint>
+#include <QTransform>
 
 class CustomVideoCoorToCoor : public QObject
 {
