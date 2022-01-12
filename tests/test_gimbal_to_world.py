@@ -14,12 +14,12 @@ class GimbalToWorldTest(unittest.TestCase):
             reader = csv.DictReader(test_file)
             for row in reader:
                 print(row)
-                vector = convert_gimbal_orientation_to_world(float(row['body_yaw_deg']),
+                vector = convert_gimbal_orientation_to_world(float(row['body_roll_deg']),
                                                              float(row['body_pitch_deg']),
-                                                             float(row['body_roll_deg']),
-                                                             float(row['gimbal_yaw_body']),
+                                                             float(row['body_yaw_deg']),
+                                                             float(row['gimbal_roll_body']),
                                                              float(row['gimbal_pitch_body']),
-                                                             float(row['gimbal_roll_body']))
+                                                             float(row['gimbal_yaw_body']))
                 print(np.around(np.degrees(vector), 2))
 
         self.assertEqual(True, True)  # add assertion here
