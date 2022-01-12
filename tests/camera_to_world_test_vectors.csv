@@ -1,0 +1,6 @@
+﻿body_roll_deg,body_pitch_deg,body_yaw_deg,gimbal_roll_body,gimbal_pitch_body,gimbal_yaw_body,gimbal_roll_world,gimbal_pitch_world,gimbal_yaw_world
+0,0,0,0,-30,0,0,-30,0
+0,0,180,0,-30,0,0,-30,180
+0,0,90,0,-33.3,0,0,-33.3,90
+0,30,180,0,-30,0,0,0,180
+0,0,90,0,-30,0,0,-30,90
