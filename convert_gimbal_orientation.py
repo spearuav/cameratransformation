@@ -4,7 +4,6 @@
 # Copyright SpearUAV 2021
 # All rights reserved.
 #
-# __author__ = "Eden Ben Asulin"
 #  ____
 # / ___| _ __   ___  __ _ _ __ _   _  __ ___   __
 # \___ \| '_ \ / _ \/ _` | '__| | | |/ _` \ \ / /
