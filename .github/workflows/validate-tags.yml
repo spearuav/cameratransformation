@@ -1,0 +1,15 @@
+name: Validate tags
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  validate:
+    uses: spearuav/org-wide-linting-configs/.github/workflows/validate-tags.yml@main
+    secrets: inherit
